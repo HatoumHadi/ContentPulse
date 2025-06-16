@@ -627,7 +627,7 @@ async function mockContentAggregation(resourceId: number, url: string, keywords?
             
             const response = await fetch(rssUrl, {
               headers: {
-                'User-Agent': 'Mozilla/5.0 (compatible; ArticleRadar/1.0)'
+                'User-Agent': 'Mozilla/5.0 (compatible; Article Monitoring/1.0)'
               },
               signal: controller.signal
             });
@@ -654,7 +654,7 @@ async function mockContentAggregation(resourceId: number, url: string, keywords?
         
         const response = await fetch(normalizedTargetUrl, {
           headers: {
-            'User-Agent': 'Mozilla/5.0 (compatible; ArticleRadar/1.0)'
+            'User-Agent': 'Mozilla/5.0 (compatible; Article Monitoring/1.0)'
           },
           signal: controller2.signal
         });

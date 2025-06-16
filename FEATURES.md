@@ -1,4 +1,4 @@
-# ArticleRadar - Features Overview
+# Article Monitoring - Features Overview
 
 ## Core Features
 

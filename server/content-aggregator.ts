@@ -113,7 +113,7 @@ export async function aggregateContent(resourceId: number, url: string, keywords
       console.log(`Attempting to discover RSS feeds from: ${url}`);
       const pageResponse = await fetch(url, {
         headers: {
-          'User-Agent': 'Mozilla/5.0 (compatible; ArticleRadar/1.0)',
+          'User-Agent': 'Mozilla/5.0 (compatible; Article Monitoring/1.0)',
           'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
         },
         signal: AbortSignal.timeout(5000)
@@ -175,7 +175,7 @@ export async function aggregateContent(resourceId: number, url: string, keywords
         
         const response = await fetch(feedUrl, {
           headers: {
-            'User-Agent': 'Mozilla/5.0 (compatible; ArticleRadar/1.0)',
+            'User-Agent': 'Mozilla/5.0 (compatible; Article Monitoring/1.0)',
             'Accept': 'application/rss+xml, application/xml, text/xml'
           },
           signal: controller.signal

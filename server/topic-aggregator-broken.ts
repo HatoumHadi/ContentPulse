@@ -219,7 +219,7 @@ async function searchWithNewsAPI(searchTerm: string, domainFilter?: string) {
     
     const response = await fetch(url, {
       headers: {
-        'User-Agent': 'ArticleRadar/1.0'
+        'User-Agent': 'Article Monitoring/1.0'
       }
     });
     
@@ -369,7 +369,7 @@ async function searchNewsArticles(searchTerm: string, domainFilter?: string) {
         
         const response = await fetch(sourceUrl, {
           headers: {
-            'User-Agent': 'Mozilla/5.0 (compatible; ArticleRadar/1.0)',
+            'User-Agent': 'Mozilla/5.0 (compatible; Article Monitoring/1.0)',
             'Accept': 'application/rss+xml, application/xml, text/xml'
           },
           signal: controller.signal

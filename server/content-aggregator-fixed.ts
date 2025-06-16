@@ -57,7 +57,7 @@ export async function aggregateContent(resourceId: number, url: string, keywords
         
         const response = await fetch('https://www.almayadeen.net/rss/news', {
           headers: {
-            'User-Agent': 'Mozilla/5.0 (compatible; ArticleRadar/1.0)',
+            'User-Agent': 'Mozilla/5.0 (compatible; Article Monitoring/1.0)',
             'Accept': 'application/rss+xml, application/xml, text/xml'
           },
           signal: controller.signal

@@ -3,21 +3,16 @@ import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { isUnauthorizedError } from "@/lib/authUtils";
 import ResourceInput from "@/components/ResourceInput";
 import PlatformCategoryToggle from "@/components/PlatformCategoryToggle";
-
 import ContentSections from "@/components/ContentSections";
 import FolderSidebar from "@/components/FolderSidebar";
 import FavoriteArticlesView from "@/components/FavoriteArticlesView";
 import SavedSearchesView from "@/components/SavedSearchesView";
 import SocialMediaAnalytics from "@/components/SocialMediaAnalytics";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Calendar, Plus, MoreVertical, Moon, Sun, LogOut, Bug } from "lucide-react";
+import { Calendar, Moon, Sun, LogOut } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
-import RSSDebugger from "@/components/RSSDebugger";
 
 interface Resource {
   id: number;
@@ -30,20 +25,18 @@ interface Resource {
 
 export default function Dashboard() {
   const { toast } = useToast();
-  const { isAuthenticated, isLoading, user } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const [selectedResource, setSelectedResource] = useState<Resource | null>(null);
   const [selectedFolderId, setSelectedFolderId] = useState<number | undefined>(undefined);
-  const [selectedSearch, setSelectedSearch] = useState<any>(null);
   const [isMonitoringActive, setIsMonitoringActive] = useState<boolean>(false);
   const [currentView, setCurrentView] = useState<'articles' | 'favorites' | 'folder' | 'analytics'>('articles');
   const [activePlatforms, setActivePlatforms] = useState({
     website: true,
     reddit: true,
-    social: true, // Covers Facebook, Instagram, Twitter/X
+    social: true,
   });
 
-  // Redirect to home if not authenticated
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       toast({
@@ -54,7 +47,6 @@ export default function Dashboard() {
       setTimeout(() => {
         window.location.href = "/";
       }, 500);
-      return;
     }
   }, [isAuthenticated, isLoading, toast]);
 
@@ -63,11 +55,9 @@ export default function Dashboard() {
     enabled: isAuthenticated,
   });
 
-  // Auto-select most recent resource if available
   useEffect(() => {
     const resourceArray = resources as Resource[] | undefined;
     if (resourceArray && resourceArray.length > 0 && !selectedResource) {
-      // Sort by creation date descending and select the newest resource
       const sortedResources = [...resourceArray].sort((a, b) => 
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
@@ -77,7 +67,7 @@ export default function Dashboard() {
 
   const handleResourceCreated = (resource: Resource) => {
     setSelectedResource(resource);
-    setIsMonitoringActive(true); // Activate monitoring when resource is created
+    setIsMonitoringActive(true);
     refetchResources();
   };
 
@@ -113,16 +103,16 @@ export default function Dashboard() {
   }
 
   if (!isAuthenticated) {
-    return null; // Will redirect via useEffect
+    return null;
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="bg-primary dark:bg-gradient-to-r dark:from-primary/90 dark:to-primary border-b border-border px-6 py-4 shadow-sm">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+    <div className="min-h-screen bg-background flex flex-col overflow-hidden">
+      {/* Fixed Header */}
+      <header className="bg-primary dark:bg-gradient-to-r dark:from-primary/90 dark:to-primary border-b border-border px-6 py-4 shadow-sm fixed top-0 left-0 right-0 z-50 h-16">
+        <div className="max-w-7xl mx-auto flex items-center justify-between h-full">
           <div className="flex items-center space-x-4">
-            <h1 className="text-2xl font-bold text-white dark:text-white">ArticleRadar</h1>
+            <h1 className="text-2xl font-bold text-white dark:text-white">Article Monitoring</h1>
           </div>
           
           <div className="flex items-center space-x-4">
@@ -130,10 +120,7 @@ export default function Dashboard() {
               <Calendar className="w-4 h-4 mr-2" />
               <span>Live Analytics</span>
             </div>
-            
 
-
-            {/* Theme Toggle */}
             <Button
               variant="ghost"
               size="sm"
@@ -155,20 +142,20 @@ export default function Dashboard() {
         </div>
       </header>
 
-      {/* Main Content with Folder Sidebar */}
-        <div className="flex h-[calc(100vh-80px)]">
-          {/* Folder Sidebar */}
+      {/* Main Content with Fixed Sidebar */}
+      <div className="flex flex-1 pt-16 overflow-hidden">
+        {/* Fixed Sidebar - Now with horizontal scroll prevention */}
+        <div className="w-72 border-r border-border fixed left-0 top-16 bottom-0 overflow-y-auto overflow-x-hidden bg-background z-40">
           <FolderSidebar 
             selectedFolderId={selectedFolderId}
             onFolderSelect={setSelectedFolderId}
             onShowFavorites={() => setCurrentView('favorites')}
           />
+        </div>
 
-          {/* Main Content Area */}
-          <div className="flex-1 overflow-auto">
-            <div className="max-w-7xl mx-auto px-6 py-8">
-            
-            {/* Navigation Tabs */}
+        {/* Main Content Area */}
+        <div className="flex-1 ml-64 overflow-auto">
+          <div className="max-w-6xl mx-auto px-6 py-8">
             {!selectedFolderId && (
               <div className="mb-6">
                 <div className="flex space-x-1 bg-muted p-1 rounded-lg w-fit">
@@ -189,20 +176,11 @@ export default function Dashboard() {
                   >
                     Analytics
                   </Button>
-                  <Button
-                    variant={currentView === 'favorites' ? 'default' : 'ghost'}
-                    size="sm"
-                    onClick={() => setCurrentView('favorites')}
-                    className={currentView === 'favorites' ? 'bg-background shadow-sm text-foreground dark:text-foreground' : 'text-muted-foreground hover:text-foreground'}
-                  >
-                    Favorites
-                  </Button>
                 </div>
               </div>
             )}
             
             {selectedFolderId ? (
-              /* Folder View */
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <h2 className="text-2xl font-bold text-foreground">Folder Content</h2>
@@ -219,7 +197,6 @@ export default function Dashboard() {
                 <SavedSearchesView 
                   folderId={selectedFolderId}
                   onSearchSelect={(search) => {
-                    // Navigate to the search results
                     const resource = resources?.find((r: Resource) => r.id === search.resourceId);
                     if (resource) {
                       setSelectedResource(resource);
@@ -232,7 +209,6 @@ export default function Dashboard() {
             ) : currentView === 'favorites' ? (
               <FavoriteArticlesView onShowDashboard={() => setCurrentView('articles')} />
             ) : currentView === 'analytics' && selectedResource ? (
-              /* Analytics View */
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <h2 className="text-2xl font-bold text-foreground">Social Media Analytics</h2>
@@ -249,9 +225,7 @@ export default function Dashboard() {
                 />
               </div>
             ) : (
-              /* Original Dashboard View */
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Left Column: Resource Input & Analytics */}
                 <div className="lg:col-span-1 space-y-6">
                   <ResourceInput 
                     onResourceCreated={handleResourceCreated} 
@@ -267,16 +241,13 @@ export default function Dashboard() {
                   )}
                 </div>
 
-                {/* Right Column: Content Sections */}
                 <div className="lg:col-span-2 space-y-6">
                   {selectedResource ? (
-                    <>
-                      <ContentSections 
-                        resourceId={selectedResource.id} 
-                        activePlatforms={activePlatforms}
-                        isMonitoringActive={isMonitoringActive}
-                      />
-                    </>
+                    <ContentSections 
+                      resourceId={selectedResource.id} 
+                      activePlatforms={activePlatforms}
+                      isMonitoringActive={isMonitoringActive}
+                    />
                   ) : (
                     <Card>
                       <CardHeader>

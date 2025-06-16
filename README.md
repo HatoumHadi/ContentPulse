@@ -1,4 +1,4 @@
-# ArticleRadar - Content Analytics Dashboard
+# Article Monitoring - Content Analytics Dashboard
 
 A comprehensive content aggregation and analytics dashboard that provides real-time insights across multiple media channels.
 

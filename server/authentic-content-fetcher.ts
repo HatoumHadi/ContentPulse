@@ -23,7 +23,7 @@ export async function fetchAuthenticContent(url: string, keywords?: string): Pro
     // Fetch the website content
     const response = await fetch(url, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; ArticleRadar/1.0)'
+        'User-Agent': 'Mozilla/5.0 (compatible; Article Monitoring/1.0)'
       },
       signal: AbortSignal.timeout(15000)
     });

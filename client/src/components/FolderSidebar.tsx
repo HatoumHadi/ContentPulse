@@ -155,7 +155,7 @@ export default function FolderSidebar({
       <div className="p-6 border-b border-border">
         <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
           <Archive className="w-5 h-5 text-primary" />
-          ArticleRadar
+          Article Monitoring
         </h2>
         <p className="text-sm text-muted-foreground mt-1">
           Content aggregation and curation
@@ -176,14 +176,14 @@ export default function FolderSidebar({
           </Button>
 
           {/* Favorites */}
-          <Button
+          {/* <Button
             variant="ghost"
             className="w-full justify-start h-10 px-3"
             onClick={onShowFavorites}
           >
             <Star className="w-4 h-4 mr-3" />
             Favorites
-          </Button>
+          </Button> */}
 
           {/* Folders Section */}
           <div className="pt-4">

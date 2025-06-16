@@ -17,7 +17,7 @@ export async function diagnoseRSSIssues(url: string, resourceId?: number) {
     console.log('\n1. Testing main URL accessibility...');
     const mainResponse = await fetch(url, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; ArticleRadar/1.0)',
+        'User-Agent': 'Mozilla/5.0 (compatible; Article Monitoring/1.0)',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
       },
       signal: AbortSignal.timeout(15000)
@@ -88,7 +88,7 @@ export async function diagnoseRSSIssues(url: string, resourceId?: number) {
         console.log(`Testing: ${feedUrl}`);
         const feedResponse = await fetch(feedUrl, {
           headers: {
-            'User-Agent': 'Mozilla/5.0 (compatible; ArticleRadar/1.0)',
+            'User-Agent': 'Mozilla/5.0 (compatible; Article Monitoring/1.0)',
             'Accept': 'application/rss+xml, application/atom+xml, application/xml, text/xml'
           },
           signal: AbortSignal.timeout(10000)
